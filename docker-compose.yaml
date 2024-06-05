@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+
+  # Web Server Service
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-account
+    ports:
+      - "8001:80"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - app
+
+  # Application Service
+  app:
+    container_name: account
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "9001:9000"
+    working_dir: /var/www
